@@ -34,7 +34,7 @@ function restricted() {
   };
 };
 
-router.get('/', (req, res, next) => {
+router.get('/', restricted(), (req, res, next) => {
   try {
     const users = await usersModel.find()
 
