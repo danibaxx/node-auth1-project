@@ -6,7 +6,7 @@ const router = express.Router()
 
 function restricted() {
   const authErr = {
-    message: 'Cannot pass go!'
+    message: 'You shall not pass!'
   };
 
   return async (req, res, next) => {
@@ -34,7 +34,7 @@ function restricted() {
   };
 };
 
-router.get('/', restricted(), (req, res, next) => {
+router.get('/', restricted(), async (req, res, next) => {
   try {
     const users = await usersModel.find()
 

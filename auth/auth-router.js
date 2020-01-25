@@ -21,14 +21,30 @@ router.post('/login', async (req, res, next) => {
     const pwValid = await bcrypt.compare(password, user.password);
 
     if (user && pwValid) {
+      req.session.user = user
       res.status(200).json({
-        message: `Welcome ${user.username}!`,
+        message: "Logged in",
       })
     } else {
       res.status(401).json({
-        message: 'Cannot pass go!'
+        message: 'You shall not pass!'
       })
     }
+  } catch(err) {
+    next(err)
+  }
+});
+
+router.get('/protected', async (req, res, next) => {
+  try {
+    if (!req.session || !req.session.user) {
+      return res.status(403).json({
+        message: 'You shall not pass!'
+      })
+    }
+    res.json({
+      message: 'Logged in'
+    })
   } catch(err) {
     next(err)
   }
